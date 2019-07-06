@@ -1,10 +1,12 @@
 # encoding:utf-8
 from functools import wraps
 
-def rpc_server(data_type='json', queue_name=''):
+def send_to(queue=''):
     def decorators(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            data = func(*args, **kwargs)
+            result = func(*args, **kwargs)
+
+            return result
         return wrapper
     return decorators

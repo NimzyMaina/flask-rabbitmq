@@ -1,26 +1,27 @@
 # flask-rabbitmq
 
-`flask-rabbitmq` is a frame that simplifies python to operate rabbitmq and can be combined with Flask very well. So you don't need to think about the underlying operations
+`flask-rabbitmq`是一个简化Python的`rabbitmq`操作的框架，并且很好地和Flask结合，让你不需要去考虑底层的操作。
 
-[中文文档点这](https://github.com/PushyZqin/flask-rabbitmq/blob/dev/documentation/%E4%B8%AD%E6%96%87README.md)
 
 ## Install
 
-This project has been commited to Pypi, can be installed by `pip`:
+在项目已经提交到[Pypi](https://pypi.org/project/flask-rabbitmq/)上，可直接通过`pip`进行安装：
 
-```shell
+```
 $ pip install flask-rabbitmq
 ```
 
 ## Features
 
-- Start following Flask app, no consideration about the process blocking
-- Configure by `config.py`
-- Support declaring queue by decorator or register class
+- 跟随Flask应用启动，让开发者不需要考虑进程的阻塞
+
+- 通过`config.py`配置连接，很好的与代码解耦
+
+- 支持通过装饰器或注册类的方式声明队列，简化声明队列和消费的操作
 
 ## Simple example
 
-Firstly instantiate `RabbitMQ` and `Queue` object in `app/__init__.py` then import `demo` module:
+首先在`app/__init__.py`在实例化`RabbitMQ`和`Queue`对象，然后导入`demo`的包文件：
 
 ```python
 from example.app import app
@@ -33,18 +34,18 @@ rpc = RabbitMQ(app, queue)
 from example.app import demo
 ```
 
-Create `demo` package and `__init__.py`file in `app`directory. Now you can declare queue and consumer in `__init__.py`file:
+在`app`目录下创建`demo`包，在`__init__`文件中声明队列和消费：
 
 ```python
 from example.app import rpc,queue
 from flask_rabbitmq import ExchangeType
 
-# declare the queue of defaulted exchange by decorator
+# 通过装饰器的方式进行声明一个默认交换机的队列
 @queue(queue_name='helloc')
 def helloc_callback(ch, method, props, body):
     print(body)
 
-# declare the queue of topic exchange, flask-rabbitmq will bind automatically by key
+# 通过装饰器的方式声明一个主题交换机，框架会自动将queue和exchange通过key绑定
 @queue(queue_name='hello-topic', type=ExchangeType.TOPIC, exchange_name='hello-exchange',
        routing_key='hello-key')
 def hellp_topic_callback(ch, method, props, body):
@@ -55,10 +56,7 @@ rpc.run()
 
 ## Contact me
 
-Email：
-
-- 1437876073@qq.com
-- pushy.zhengzuqin@gmail.com
+Email：1437876073@qq.com
 
 ## License
 
@@ -85,4 +83,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
